@@ -1,0 +1,567 @@
+/* 1. CSS Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+img, iframe {
+    max-width: 100%;
+    display: block;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* 2. Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+    /* Colour */
+    --color-navy:        #16283F;
+    --color-navy-dark:   #0E1A2B;
+    --color-amber:       #F2A20C;
+    --color-amber-dark:  #C97F00;
+    --color-bg:          #FAF8F4;
+    --color-surface:     #E8EEF2;
+    --color-text:        #3A4652;
+    --color-text-light:  #6C7A87;
+    --color-white:       #FFFFFF;
+
+    /* Type */
+    --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+    --step-0: 1rem;
+    --step-1: 1.25rem;
+    --step-2: 1.75rem;
+    --step-3: 2.5rem;
+    --step-4: 3.5rem;
+
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 4rem;
+    --space-xl: 6rem;
+
+    /* Effects */
+    --radius: 4px;
+    --shadow-card: 0 2px 10px rgba(22, 40, 63, 0.08);
+    --shadow-card-hover: 0 8px 24px rgba(22, 40, 63, 0.16);
+    --transition: 180ms ease;
+}
+
+
+/* 3. Base / Typography
+   -------------------------------------------------------------------------- */
+body {
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-navy);
+    line-height: 1.15;
+}
+
+h2 {
+    font-size: var(--step-2);
+    margin-bottom: var(--space-sm);
+    position: relative;
+    padding-bottom: var(--space-xs);
+}
+
+/* Signature underline accent on every H2 — the "spark" mark */
+h2::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    background: var(--color-amber);
+    margin-top: var(--space-xs);
+}
+
+h3 {
+    font-size: var(--step-1);
+    margin-bottom: var(--space-xs);
+}
+
+p {
+    margin-bottom: var(--space-sm);
+    max-width: 65ch;
+}
+
+a {
+    color: var(--color-navy);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--color-amber-dark);
+    border-bottom-color: currentColor;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--color-amber);
+    outline-offset: 2px;
+}
+
+address {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.9;
+}
+
+
+/* 4. Layout Primitives
+   -------------------------------------------------------------------------- */
+main {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+}
+
+main > section {
+    margin-bottom: var(--space-xl);
+}
+
+
+/* 5. Header & Navigation
+   -------------------------------------------------------------------------- */
+header {
+    background: var(--color-navy);
+    padding: var(--space-sm) var(--space-md);
+}
+
+header h1 {
+    color: var(--color-white);
+    font-size: var(--step-1);
+    max-width: 72rem;
+    margin: 0 auto;
+}
+
+nav {
+    background: var(--color-navy-dark);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav ul {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav a {
+    display: block;
+    padding: var(--space-sm) var(--space-sm);
+    color: var(--color-white);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+}
+
+nav a:hover,
+nav a:focus-visible {
+    background: rgba(242, 162, 12, 0.1);
+    border-bottom-color: var(--color-amber);
+    color: var(--color-amber);
+}
+
+
+/* 6. Signature Divider — circuit trace
+   -------------------------------------------------------------------------- */
+main > section + section {
+    position: relative;
+    padding-top: var(--space-lg);
+}
+
+main > section + section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-image:
+        linear-gradient(to right, var(--color-surface) 0%, var(--color-surface) 100%),
+        radial-gradient(circle, var(--color-amber) 2.5px, transparent 2.5px);
+    background-size: 100% 2px, 16px 2px;
+    background-repeat: no-repeat, repeat-x;
+    background-position: center, left center;
+}
+
+
+/* 7. Buttons — "rocker switch" CTA
+   -------------------------------------------------------------------------- */
+.cta-button,
+button[type="submit"] {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--color-navy);
+    color: var(--color-white);
+    border: 2px solid var(--color-navy);
+    border-radius: var(--radius);
+    padding: 0.9em 1.75em;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.cta-button:hover,
+.cta-button:focus-visible,
+button[type="submit"]:hover,
+button[type="submit"]:focus-visible {
+    background: var(--color-amber);
+    border-color: var(--color-amber);
+    color: var(--color-navy-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.cta-button:active,
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+
+/* 8. Hero (index.html)
+   -------------------------------------------------------------------------- */
+#hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-lg);
+    align-items: center;
+}
+
+#hero img {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+#hero h2 {
+    font-size: var(--step-3);
+}
+
+
+/* 9. Cards / Sections
+   -------------------------------------------------------------------------- */
+
+/* Services preview list on homepage */
+#services-preview ul {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-sm);
+}
+
+#services-preview li {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--color-surface);
+    color: var(--color-navy);
+    padding: 0.4em 0.9em;
+    border-radius: 999px;
+}
+
+/* Services page: three service blocks styled as a responsive card grid */
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+#residential-wiring,
+#commercial-installations,
+#fault-finding {
+    background: var(--color-white);
+    border: 1px solid var(--color-surface);
+    border-left: 4px solid var(--color-amber);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition), transform var(--transition);
+    margin-bottom: 0;
+}
+
+#residential-wiring:hover,
+#commercial-installations:hover,
+#fault-finding:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+}
+
+#residential-wiring img,
+#commercial-installations img,
+#fault-finding img {
+    border-radius: var(--radius);
+    margin-bottom: var(--space-sm);
+}
+
+/* About page team list */
+#team ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+#team li {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    padding: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+#history img,
+#team img {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--space-sm);
+}
+
+
+/* 10. Forms (enquiry.html, contact.html)
+   -------------------------------------------------------------------------- */
+form {
+    display: grid;
+    gap: var(--space-sm);
+    max-width: 34rem;
+    background: var(--color-white);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+}
+
+label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+    margin-bottom: -0.5rem;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.75em 0.9em;
+    border: 1px solid #C9D2D8;
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: var(--color-navy);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-amber);
+    box-shadow: 0 0 0 3px rgba(242, 162, 12, 0.2);
+    outline: none;
+}
+
+form button[type="submit"] {
+    justify-self: start;
+    margin-top: var(--space-xs);
+}
+
+/* Contact page: two-column layout for details + map on wider screens */
+#contact-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+#map iframe {
+    border-radius: var(--radius);
+    margin-bottom: var(--space-sm);
+    box-shadow: var(--shadow-card);
+}
+
+
+/* 11. Footer
+   -------------------------------------------------------------------------- */
+footer {
+    background: var(--color-navy-dark);
+    color: var(--color-white);
+    text-align: center;
+    padding: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    margin-top: var(--space-xl);
+}
+
+footer p {
+    max-width: none;
+    margin-bottom: 0.4em;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+
+/* 12. Utilities
+   -------------------------------------------------------------------------- */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   13. RESPONSIVE — Tablet (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    main {
+        padding: var(--space-md) var(--space-sm);
+    }
+
+    :root {
+        --step-3: 2rem;
+        --step-2: 1.5rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav a {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-left: 3px solid transparent;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+        border-left-color: var(--color-amber);
+    }
+
+    #hero {
+        grid-template-columns: 1fr;
+    }
+
+    #hero img {
+        order: -1;
+    }
+
+    #team ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #contact-details {
+        grid-template-columns: 1fr;
+    }
+
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================================================
+   14. RESPONSIVE — Mobile (max-width: 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+
+    :root {
+        --step-3: 1.65rem;
+        --step-2: 1.3rem;
+        --step-1: 1.1rem;
+        --space-lg: 2.5rem;
+        --space-xl: 3rem;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
+    }
+
+    nav a {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.75rem;
+    }
+
+    #services-preview ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #team ul {
+        grid-template-columns: 1fr;
+    }
+
+    form {
+        padding: var(--space-sm);
+    }
+
+    .cta-button,
+    button[type="submit"] {
+        width: 100%;
+        text-align: center;
+    }
+}
